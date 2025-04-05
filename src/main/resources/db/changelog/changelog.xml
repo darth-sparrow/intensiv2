@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="1" author="Darth Sparrow">
+        <createTable tableName="addresses">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="building" type="int"/>
+            <column name="street" type="varchar(255)"/>
+            <column name="city" type="varchar(255)"/>
+            <column name="region" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="Darth Sparrow">
+        <createTable tableName="ticket_info">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="price" type="decimal(10,2)"/>
+            <column name="currency" type="varchar(10)"/>
+            <column name="availability" type="boolean"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="Darth Sparrow">
+        <createTable tableName="services">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="description" type="text"/>
+            <column name="service_type" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4" author="Darth Sparrow">
+        <createTable tableName="attractions">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="description" type="text"/>
+            <column name="attraction_type" type="varchar(255)"/>
+            <column name="address_id" type="uuid"/>
+            <column name="ticket_info_id" type="uuid"/>
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="attractions"
+                baseColumnNames="address_id"
+                referencedTableName="addresses"
+                referencedColumnNames="id"
+                constraintName="fk_attractions_address" />
+        <addForeignKeyConstraint
+                baseTableName="attractions"
+                baseColumnNames="ticket_info_id"
+                referencedTableName="ticket_info"
+                referencedColumnNames="id"
+                constraintName="fk_attractions_ticket_info" />
+
+    </changeSet>
+    <changeSet id="5" author="Darth Sparrow">
+        <createTable tableName="attraction_service">
+            <column name="attraction_id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="service_id" type="uuid">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="attraction_service"
+                baseColumnNames="attraction_id"
+                referencedTableName="attractions"
+                referencedColumnNames="id"
+                constraintName="fk_attraction_service_attraction" />
+
+        <addForeignKeyConstraint
+                baseTableName="attraction_service"
+                baseColumnNames="service_id"
+                referencedTableName="services"
+                referencedColumnNames="id"
+                constraintName="fk_attraction_service_service" />
+    </changeSet>
+</databaseChangeLog>
