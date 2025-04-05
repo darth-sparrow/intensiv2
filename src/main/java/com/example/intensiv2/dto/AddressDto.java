@@ -17,7 +17,7 @@ public class AddressDto {
     private String street;
     /** Город */
     private String city;
-    /** Обасть */
+    /** Область */
     private String region;
 }
 
